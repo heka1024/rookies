@@ -1,10 +1,28 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from survey.serializers import SurveyResultSerializer
-from survey.models import SurveyResult
+from survey.serializers import SurveyResultSerializer, OperatingSystemSerializer
+from survey.models import SurveyResult, OperatingSystem
 
+class OperatingSystemViewSet(viewsets.GenericViewSet):
+    queryset = OperatingSystem.objects.all()
+    serializer_class = OperatingSystemSerializer
+
+    # GET /api/v1/os/
+    def list(self, request):
+        opersatingSystems = self.get_queryset()
+        return Response(self.get_serializer(opersatingSystems, many=True).data)
+
+    # GET /api/v1/os/{os_id}/
+    def retrieve(self, request, pk=None):
+        # v1 : using try ~ except
+        # try:
+        os = self.get_object()
+        return Response(self.get_serializer(os).data)
+        # except ObjectDoesNotExist:
+        #     return Response(status=status.HTTP_404_NOT_FOUND)
 
 class SurveyResultViewSet(viewsets.GenericViewSet):
     queryset = SurveyResult.objects.all()
