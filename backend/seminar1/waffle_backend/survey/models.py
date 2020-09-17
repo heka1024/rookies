@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class OperatingSystem(models.Model):
     name = models.CharField(max_length=50, db_index=True)
@@ -25,4 +25,7 @@ class SurveyResult(models.Model):
     backend_reason = models.CharField(max_length=500)
     waffle_reason = models.CharField(max_length=500, blank=True)
     say_something = models.CharField(max_length=500, blank=True)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    user_id = models.ForeignKey(User, null=True, related_name='surveys', on_delete=models.SET_NULL)
+

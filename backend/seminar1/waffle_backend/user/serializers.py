@@ -12,6 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
             'id',
             'username',
             'email',
+            'first_name',
+            'last_name',
             'last_login',  # 가장 최근 로그인 시점
             'date_joined'  # 가입 시점
         )
